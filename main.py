@@ -1,7 +1,7 @@
 import requests
 import numpy as np
 import h5py
-
+s
 QEC = "0.1.0" # Version number for challenge, can check with site for compatability, will provide appropriate error message when different to server to help communicate with teams that urgent updates are needed
 URL = "https://sim.quantumnextgen.com.au/"
 
