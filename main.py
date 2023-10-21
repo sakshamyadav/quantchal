@@ -1,8 +1,9 @@
 import qe_minesweeper
 
-magnetic_field, dipole = qe_minesweeper.load_dataset("C:\\Users\\saksh\\Desktop\\dataset\\stage1_training_dataset.h5", 1)
+scenario_num = 423
+magnetic_field, dipole = qe_minesweeper.load_dataset("C:\\Users\\saksh\\Desktop\\dataset\\stage1_training_dataset.h5", scenario_num)
 
-mine_locations = qe_minesweeper.load_answers("C:\\Users\\saksh\\Desktop\\dataset\\stage1_training_dataset.h5", 666)
+mine_locations = qe_minesweeper.load_answers("C:\\Users\\saksh\\Desktop\\dataset\\stage1_training_dataset.h5", scenario_num)
 mag_east = magnetic_field[0]
 mag_north = magnetic_field[1]
 mag_up = magnetic_field[2]
