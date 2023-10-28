@@ -25,20 +25,15 @@ import skimage.morphology
 from matplotlib.collections import PatchCollection
 
 scenario_num = random.randint(1,1000)
-scenario_num = 423
-magnetic_field, dipole = qe_minesweeper.load_dataset("C:\\Users\\saksh\\Desktop\\dataset\\stage1_training_dataset.h5", scenario_num)
+#scenario_num = 423
+magnetic_field, dipole = qe_minesweeper.load_dataset("C:\\Users\\saksh\\Desktop\\dataset\\stage1_test_dataset.h5", scenario_num)
 
-mine_locations = qe_minesweeper.load_answers("C:\\Users\\saksh\\Desktop\\dataset\\stage1_training_dataset.h5", scenario_num)
-mine_locations = mine_locations.astype(int)
+
 mag_east = magnetic_field[0]
 mag_north = magnetic_field[1]
 mag_up = magnetic_field[2]
 
-mine_loc_east = mine_locations[0]
-mine_loc_north = mine_locations[1] 
 
-for i in range(mine_locations.shape[1]):
-    print('mine at', mine_loc_east[i], mine_loc_north[i])
 
 
 magnetic_field = magnetic_field.transpose(1,2,0)
@@ -46,10 +41,9 @@ magnetic_field = cv2.normalize(magnetic_field, None, 0, 255,cv2.NORM_MINMAX).ast
 image_gray = cv2.cvtColor(magnetic_field, cv2.COLOR_BGR2GRAY)
 print(image_gray.min(), image_gray.max())
 
-#image_gray = cv2.normalize(image_gray, None, 0, 255,cv2.NORM_MINMAX).astype(np.uint8)
+image_gray = cv2.normalize(image_gray, None, 0, 255,cv2.NORM_MINMAX).astype(np.uint8)
 image_gray = cv2.bitwise_not(image_gray)
-#image_gray = cv2.GaussianBlur(image_gray, (5,5), 0)
-mlt = mine_locations.transpose(1,0)
+image_gray = cv2.GaussianBlur(image_gray, (5,5), 0)
 
 def plotRoi(spots, img_ax, color, radius):
     patches1 = []
@@ -61,12 +55,6 @@ def plotRoi(spots, img_ax, color, radius):
     img_ax.add_collection(PatchCollection(patches1, facecolors = "green", edgecolors = 'green', alpha = 0.3, linewidths = 5))
 
     
-    for i in mlt:
-        y, x = i 
-        c2 = plt.Circle((x,y),radius)
-        patches2.append(c2)
-    img_ax.add_collection(PatchCollection(patches2, facecolors = "red", edgecolors = 'red', alpha = 0.3, linewidths = 1))
-
 
 
 im = image_gray
@@ -99,7 +87,6 @@ ax[2].set_title('Peak local max')
 
 ax[3].imshow(im, cmap=plt.cm.gray)
 ax[3].autoscale(False)
-ax[3].plot(mlt[:, 1], mlt[:, 0], 'r.')
 ax[3].axis('off')
 ax[3].set_title('Actual')
 
@@ -113,28 +100,24 @@ fig, axes = plt.subplots(1, 5, figsize=(10, 4))
 
 # Plot on the first subplot
 plt.sca(axes[0])  # Set the current axes to the first subplot
-plt.scatter(mine_locations[1], mine_locations[0], marker='x', color='blue')
 im1 = plt.imshow(mag_up, cmap='hot', interpolation='nearest')
 plt.colorbar(im1, ax=axes[0])  # Add a colorbar to the first subplot
 axes[0].set_title('Magnetic Field (z)')
 
 # Plot on the second subplot
 plt.sca(axes[1])  # Set the current axes to the second subplot
-plt.scatter(mine_locations[1], mine_locations[0], marker='x', color='blue')
 im2 = plt.imshow(mag_east, cmap='hot', interpolation='nearest')
 plt.colorbar(im2, ax=axes[1])  # Add a colorbar to the second subplot
 axes[1].set_title('Magnetic Field (x)')
 
 # Plot on the second subplot
 plt.sca(axes[2])  # Set the current axes to the second subplot
-plt.scatter(mine_locations[1], mine_locations[0], marker='x', color='blue')
 im2 = plt.imshow(mag_north, cmap='hot', interpolation='nearest')
 plt.colorbar(im2, ax=axes[2])  # Add a colorbar to the second subplot
 axes[2].set_title('Magnetic Field (y)')
 
 # Plot on the second subplot
 plt.sca(axes[3])  # Set the current axes to the second subplot
-plt.scatter(mine_locations[1], mine_locations[0], marker='x', color='red')
 im2 = plt.imshow(magnetic_field, cmap='hot', interpolation='nearest')
 plt.colorbar(im2, ax=axes[3])  # Add a colorbar to the second subplot
 axes[3].set_title('Magnetic Field as RGB (all channels)')
