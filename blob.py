@@ -31,7 +31,7 @@ from skimage.feature import blob_dog, blob_log, blob_doh
 from skimage.color import rgb2gray
 
 scenario_num = random.randint(1,1000)
-scenario_num = 787
+scenario_num = 788
 magnetic_field, dipole = qe_minesweeper.load_dataset("C:\\Users\\saksh\\Desktop\\dataset\\stage1_test_dataset.h5", scenario_num)
 
 mag_east = magnetic_field[0]
